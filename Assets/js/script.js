@@ -2,28 +2,41 @@
 var questions = [
     {question: "Where does meta data go?",
     a: "Body", b: "Link", c: "Head", d: "Footer",
-    answer: "Head"},
+    answer: "c"},
 
     {question: "Where do Javascript links go?",
     a: "Head", b: "Footer", c: "Body", d: "Div",
-    answer: "Body"},
+    answer: "c"},
 
     {question: "What is the file extension for Javascript?",
     a: ".pdf", b: ".txt", c: ".html", d: ".js",
-    answer: ".js"},
+    answer: "d"},
 
     {question: "How many children can an element have?",
     a: "1", b: "7", c: "As many as they want, bro!", d: "That's kinda personal...",
-    answer: "As many as they want, bro!"}
+    answer: "c"}
 ]
 
+var questionEl = $('#question');
+var timerEl = $('timer');
+var startBtn = document.getElementById("start");
+var currentQuestion = 0;
+var finished = false;
 
-// variables for question div
-// variables for submit button
-// variables for timer on screen
-// variable for start button
+function playGame(event) {
+        event.preventDefault();
+        let timeRemaining = 30;
+        var output = [];
 
-// playGame
+        startTimer();
+        displayQuestion();
+
+        
+        // questionEl.text(questions[0]);
+        // console.log(questions[0]);
+        // console.log(questions.length);
+        // console.log(answer);
+}
     // Start timer - reduce from 30
     // display question
     
@@ -40,4 +53,4 @@ var questions = [
 
 // display leaderboard from local storage
 
-// on start game ("click", playGame);
+startBtn.addEventListener("click", playGame);
