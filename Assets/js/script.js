@@ -1,27 +1,47 @@
-// Questions/possible answers x5? with correct answer
+// Questions/possible answers with correct answer
 var questions = [
     {question: "Where does meta data go?",
-    a: "Body", b: "Link", c: "Head", d: "Footer",
-    answer: "c"},
+    options: ["Body","Link","Head","Footer"],
+    answer: "Head"},
 
     {question: "Where do Javascript links go?",
-    a: "Head", b: "Footer", c: "Body", d: "Div",
-    answer: "c"},
+    options: ["Head","Footer","Body","Div"],
+    answer: "Body"},
 
     {question: "What is the file extension for Javascript?",
-    a: ".pdf", b: ".txt", c: ".html", d: ".js",
-    answer: "d"},
+    options: [".pdf",".txt",".html",".js"],
+    answer: ".js"},
 
     {question: "How many children can an element have?",
-    a: "1", b: "7", c: "As many as they want, bro!", d: "That's kinda personal...",
-    answer: "c"}
+    options: ["1","7","As many as they want, bro!","That's kinda personal..."],
+    answer: "As many as they want, bro!"}
 ]
 
+// elements in HTML variables
 var questionEl = $('#question');
 var timerEl = $('timer');
-var startBtn = document.getElementById("start");
+var startBtn = document.getElementById("start");  // Need to update this to jQuery
+var ansOptions = $('answerOptions');
+
+// variables to utilize in functions below
 var currentQuestion = 0;
 var finished = false;
+
+// show questions in order
+function displayQuestion() {
+    let fnQuestion = questions[currentQuestion].question;
+    ansOptions.find("li").remove();
+
+    questionEl.text(fnQuestion);
+    questions[currentQuestion].forEach(element => {
+        
+    });
+}
+
+// begin timer reduce from 30
+function startTimer() {
+    
+}
 
 function playGame(event) {
         event.preventDefault();
@@ -29,17 +49,12 @@ function playGame(event) {
         var output = [];
 
         startTimer();
-        displayQuestion();
 
-        
-        // questionEl.text(questions[0]);
-        // console.log(questions[0]);
-        // console.log(questions.length);
-        // console.log(answer);
+        if (finished === false) {
+            displayQuestion();
+        }
 }
-    // Start timer - reduce from 30
-    // display question
-    
+  
     // if incorrect answer -10 seconds & next question
     // else next question
 
