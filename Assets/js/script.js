@@ -5,7 +5,7 @@ var questions = [
     answer: "Head"},
 
     {question: "Where do Javascript links go?",
-    options: ["Head","Footer","Body","Div"],
+    options: ["Body","Footer","Head","Div"],
     answer: "Body"},
 
     {question: "What is the file extension for Javascript?",
@@ -26,6 +26,8 @@ var ansOptions = $('#options');
 // variables to utilize in functions below
 var currentQuestion = 0;
 var finished = false;
+let timeRemaining = 30;
+var totalScores = [];
 
 // show question and options
 function displayQuestion(curQues) {
@@ -38,7 +40,7 @@ function displayQuestion(curQues) {
     for (let i = 0; i < questions[curQues].options.length; i++) {
         var optBtn = $('<button>');
         optBtn.addClass('option-button');
-        optBtn.attr('option-number', questions[curQues].options[i]);
+        optBtn.attr('option-picked', questions[curQues].options[i]);
         optBtn.text(questions[curQues].options[i]);
         ansOptions.append(optBtn);
     }
@@ -46,21 +48,18 @@ function displayQuestion(curQues) {
     currentQuestion++;
 }
 
-function nextQuestion(event) {
-    event.preventDefault();
-    
+function nextQuestion() {
     ansOptions.children().remove();
-
 
     if (currentQuestion === 4) {
         finished = true;
         questionEl.text("");
-        scoreboard();
     } 
-    // else if (timeRemaining === 0) {
-    //     finished = true;
-    //     scoreboard();
-    // }
+    else if (timeRemaining < 0) {
+        finished = true;
+        timeRemaining = 0;
+        questionEl.text("");
+    }
     else {
         displayQuestion(currentQuestion);
     }
@@ -68,39 +67,74 @@ function nextQuestion(event) {
 
 // ask for initials and save those + timeremaining to local storage - use to display scoreboard
 function scoreboard() {
-    
+    var userScore = {
+        initials: prompt("What are your initials?"),
+        score: timeRemaining
+    }
+
+    totalScores.push(userScore);
+    console.log(userScore);
+    console.log(totalScores);
+
+    localStorage.setItem('allScores', JSON.stringify(totalScores));
+
+    function renderScores() {
+        // for loop for all scores within total scores
+        questionEl.text("done");
+        timerEl.text("");
+        startBtn.show();
+    }
+    renderScores();
 }
 
 // begin timer reduce from 30
 function startTimer() {
+    var timerInterval = setInterval(function() {
+        timeRemaining--;
+        timerEl.text(timeRemaining);
     
+        if ((timeRemaining === 0) || (finished===true)) {
+            finished=true;
+            clearInterval(timerInterval);
+            scoreboard();
+        }
+      }, 1000);
+}
+
+function init() {
+    var storedScores = JSON.parse(localStorage.getItem("userScore"));
+    if (storedScores !== null) {
+        totalScores = storedScores;
+    }
 }
 
 // main playGame funtion
 function playGame(event) {
         event.preventDefault();
-        let timeRemaining = 30;
-
-        startTimer();
-
-        if (finished === false) {
+        startTimer();    
+        startBtn.hide();
+            if (finished === false) {
             displayQuestion(currentQuestion);
         }
 }
-  
-    // if incorrect answer -10 seconds & next question
-    // else next question
 
-    // if time = 0 or no more questions = game over (run gameOver)
+function check(event) {
+    event.preventDefault();
 
-// funtion gameOver
-// ask for initials - local storage
-// score = time remaining - local storage
+    var ansPicked = $(event.target).attr('option-picked');
+    var lastQAns = currentQuestion-1;
 
-// order leaderboard by score - highest to lowest
+    if (ansPicked !== (questions[lastQAns].answer)) {
+        timeRemaining -=10;
+        nextQuestion();
+    } else {
+        nextQuestion();
+    }
 
-// display leaderboard from local storage
+}
+
+init();
 
 startBtn.on("click", playGame);
 
-ansOptions.on('click', '.option-button', nextQuestion);
+ansOptions.on('click', '.option-button', check);
