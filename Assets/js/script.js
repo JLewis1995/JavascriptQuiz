@@ -54,23 +54,24 @@ function nextQuestion() {
     if (currentQuestion === 4) {
         finished = true;
         questionEl.text("");
-    } 
-    else if (timeRemaining < 0) {
-        finished = true;
-        timeRemaining = 0;
-        questionEl.text("");
-    }
-    else {
+    } else {
         displayQuestion(currentQuestion);
     }
 }
 
 // ask for initials and save those + timeremaining to local storage - use to display scoreboard
 function scoreboard() {
-    var userScore = {
-        initials: prompt("What are your initials?"),
-        score: timeRemaining
+    var initials = prompt('What are your initials?');
+    var score = timeRemaining;
+
+    if (score < 0) {
+        score = 0;
     }
+
+    var userScore = {
+        initials: initials,
+        score: score
+    };
 
     totalScores.push(userScore);
     console.log(userScore);
@@ -80,9 +81,18 @@ function scoreboard() {
 
     function renderScores() {
         // for loop for all scores within total scores
-        questionEl.text("done");
         timerEl.text("");
         startBtn.show();
+        var leaderBoard = totalScores.sort((a, b) => b.score - a.score);
+        console.log(leaderBoard);
+
+        for (let j = 0; j < leaderBoard.length; j++) {
+            var users = $('<li>');
+            users.addClass("leader-list");
+            users.text(`User: ${leaderBoard[j].initials} Score: ${leaderBoard[j].score}`);
+            ansOptions.append(users);
+            
+        }
     }
     renderScores();
 }
@@ -93,7 +103,7 @@ function startTimer() {
         timeRemaining--;
         timerEl.text(timeRemaining);
     
-        if ((timeRemaining === 0) || (finished===true)) {
+        if ((timeRemaining <= 0) || (finished===true)) {
             finished=true;
             clearInterval(timerInterval);
             scoreboard();
@@ -102,7 +112,7 @@ function startTimer() {
 }
 
 function init() {
-    var storedScores = JSON.parse(localStorage.getItem("userScore"));
+    var storedScores = JSON.parse(localStorage.getItem("allScores"));
     if (storedScores !== null) {
         totalScores = storedScores;
     }
@@ -111,6 +121,9 @@ function init() {
 // main playGame funtion
 function playGame(event) {
         event.preventDefault();
+        currentQuestion = 0;
+        timeRemaining = 30;
+        finished = false;
         startTimer();    
         startBtn.hide();
             if (finished === false) {
