@@ -19,23 +19,56 @@ var questions = [
 
 // elements in HTML variables
 var questionEl = $('#question');
-var timerEl = $('timer');
-var startBtn = document.getElementById("start");  // Need to update this to jQuery
-var ansOptions = $('answerOptions');
+var timerEl = $('#timer');
+var startBtn = $('#start');
+var ansOptions = $('#options');
 
 // variables to utilize in functions below
 var currentQuestion = 0;
 var finished = false;
 
-// show questions in order
-function displayQuestion() {
-    let fnQuestion = questions[currentQuestion].question;
-    ansOptions.find("li").remove();
-
+// show question and options
+function displayQuestion(curQues) {
+    // creating funtion question variable from current question
+    let fnQuestion = questions[curQues].question;
+    // display question in question element
     questionEl.text(fnQuestion);
-    questions[currentQuestion].forEach(element => {
-        
-    });
+
+    // create for loop to display all options
+    for (let i = 0; i < questions[curQues].options.length; i++) {
+        var optBtn = $('<button>');
+        optBtn.addClass('option-button');
+        optBtn.attr('option-number', questions[curQues].options[i]);
+        optBtn.text(questions[curQues].options[i]);
+        ansOptions.append(optBtn);
+    }
+    // add one to currentQuestion var to go to next question on next call
+    currentQuestion++;
+}
+
+function nextQuestion(event) {
+    event.preventDefault();
+    
+    ansOptions.children().remove();
+
+
+    if (currentQuestion === 4) {
+        finished = true;
+        questionEl.text("");
+        scoreboard();
+    } 
+    // else if (timeRemaining === 0) {
+    //     finished = true;
+    //     scoreboard();
+    // }
+    else {
+        displayQuestion(currentQuestion);
+    }
+}
+
+// ask for initials and save those + timeremaining to local storage - use to display scoreboard
+function scoreboard() {
+    
 }
 
 // begin timer reduce from 30
@@ -43,15 +76,15 @@ function startTimer() {
     
 }
 
+// main playGame funtion
 function playGame(event) {
         event.preventDefault();
         let timeRemaining = 30;
-        var output = [];
 
         startTimer();
 
         if (finished === false) {
-            displayQuestion();
+            displayQuestion(currentQuestion);
         }
 }
   
@@ -68,4 +101,6 @@ function playGame(event) {
 
 // display leaderboard from local storage
 
-startBtn.addEventListener("click", playGame);
+startBtn.on("click", playGame);
+
+ansOptions.on('click', '.option-button', nextQuestion);
