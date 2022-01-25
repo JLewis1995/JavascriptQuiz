@@ -63,6 +63,8 @@ function nextQuestion() {
 function scoreboard() {
     var initials = prompt('What are your initials?');
     var score = timeRemaining;
+    questionEl.text("");
+    ansOptions.children().remove();
 
     if (score < 0) {
         score = 0;
@@ -124,6 +126,7 @@ function playGame(event) {
         currentQuestion = 0;
         timeRemaining = 30;
         finished = false;
+        ansOptions.children().remove();
         startTimer();    
         startBtn.hide();
             if (finished === false) {
