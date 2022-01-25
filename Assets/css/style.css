@@ -1,0 +1,48 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#timer {
+    text-align: center;
+    font-size: 2rem;
+    margin: 2rem;
+}
+
+#startContainer {
+    text-align: center;
+}
+
+#question {
+    text-align: center;
+    font-size: 2rem;
+    margin: 1rem;
+
+}
+
+#options {
+    text-align: center;
+    justify-content: center;
+    font-size: 3rem;
+}
+
+.leader-list {
+    text-align: center;
+    justify-content: center;
+    list-style-type: none;
+    font-size: 2rem;
+}
+
+button {
+    padding: 1rem;
+    margin: 1rem;
+}
+
+.option-button {
+    text-align: center;
+    font-size: 2rem;
+}
+
+.center {
+    text-align: center;
+    justify-content: center;
+}

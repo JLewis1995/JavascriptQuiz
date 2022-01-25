@@ -47,7 +47,7 @@ function displayQuestion(curQues) {
   // creating funtion question variable from current question
   let fnQuestion = questions[curQues].question;
   // display question in question element
-  questionEl.text(fnQuestion);
+  questionEl.text(fnQuestion).addClass("center");
 
   // create for loop to display all options
   for (let i = 0; i < questions[curQues].options.length; i++) {
@@ -79,7 +79,7 @@ function scoreboard() {
   var initials = prompt("What are your initials?");
   var score = timeRemaining;
   //   remove text other than scoreboard
-  questionEl.text("");
+  questionEl.text("Leaderboard");
   ansOptions.children().remove();
   // if deducted time took timeRemaining below 0, make score 0
   if (score < 0) {
@@ -135,6 +135,7 @@ function startTimer() {
 // on load funtion to get data from local storage and place into an array in memory
 function init() {
   var storedScores = JSON.parse(localStorage.getItem("allScores"));
+  questionEl.text("Welcome to the Javascript Quiz! Press 'Start Game' to begin!")
   if (storedScores !== null) {
     totalScores = storedScores;
   }
@@ -155,7 +156,7 @@ function playGame(event) {
   }
 }
 
-// function to check if answer was incorrect and move to next question
+// function to check if answer was incorrect and move to next questions
 function check(event) {
   event.preventDefault();
 
