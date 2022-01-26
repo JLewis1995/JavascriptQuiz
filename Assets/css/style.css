@@ -35,6 +35,10 @@
 button {
     padding: 1rem;
     margin: 1rem;
+    background-color: blue;
+    color: white;
+    border-style: none;
+    border-radius: 1.5rem;
 }
 
 .option-button {
